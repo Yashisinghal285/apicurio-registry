@@ -15,4 +15,9 @@ public abstract class AlreadyExistsException extends RegistryStorageException {
     protected AlreadyExistsException(String reason) {
         super(reason);
     }
+
+    @Override
+    public String errorCode() {
+        return "already_exists";
+    }
 }

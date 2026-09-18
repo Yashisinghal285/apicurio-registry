@@ -1,5 +1,9 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
+
+import java.util.Map;
+
 /**
  * Exception thrown when attempting to delete a group that still contains artifacts.
  */
@@ -22,5 +26,18 @@ public class GroupNotEmptyException extends RegistryStorageException {
 
     public long getArtifactCount() {
         return artifactCount;
+    }
+
+    @Override
+    public String errorCode() {
+        return "group_not_empty";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "groupId", groupId,
+                "artifactCount", String.valueOf(artifactCount)
+        );
     }
 }

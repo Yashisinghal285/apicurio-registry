@@ -1,6 +1,9 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
 import lombok.Getter;
+
+import java.util.Map;
 
 @Getter
 public class BranchAlreadyExistsException extends AlreadyExistsException {
@@ -14,5 +17,19 @@ public class BranchAlreadyExistsException extends AlreadyExistsException {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.branchId = branchId;
+    }
+
+    @Override
+    public String errorCode() {
+        return "branch_already_exists";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "groupId", groupId,
+                "artifactId", artifactId,
+                "branchId", branchId
+        );
     }
 }

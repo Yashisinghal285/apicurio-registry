@@ -1,7 +1,10 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
 import io.apicurio.registry.types.RuleType;
 import lombok.Getter;
+
+import java.util.Map;
 
 public class RuleNotFoundException extends NotFoundException {
 
@@ -24,4 +27,15 @@ public class RuleNotFoundException extends NotFoundException {
         return "No rule named '" + rule.name() + "' was found.";
     }
 
+    @Override
+    public String errorCode() {
+        return "rule_not_found";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "rule", rule != null ? rule.name() : null
+        );
+    }
 }

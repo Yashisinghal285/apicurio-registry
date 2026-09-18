@@ -1,6 +1,9 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
 import lombok.Getter;
+
+import java.util.Map;
 
 @Getter
 public class VersionAlreadyExistsOnBranchException extends AlreadyExistsException {
@@ -24,5 +27,20 @@ public class VersionAlreadyExistsOnBranchException extends AlreadyExistsExceptio
     private static String message(String groupId, String artifactId, String version, String branchId) {
         return "Version '" + version + "' (for artifact ID '" + artifactId + "' " + "in group '" + groupId
                 + "') already exists in branch '" + branchId + "'.";
+    }
+
+    @Override
+    public String errorCode() {
+        return "version_already_exists_on_branch";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "groupId", groupId,
+                "artifactId", artifactId,
+                "version", version,
+                "branchId", branchId
+        );
     }
 }

@@ -1,6 +1,9 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
 import lombok.Getter;
+
+import java.util.Map;
 
 public class ContentNotFoundException extends NotFoundException {
 
@@ -28,5 +31,18 @@ public class ContentNotFoundException extends NotFoundException {
         } else {
             return "No content with hash '" + contentHash + "' was found.";
         }
+    }
+
+    @Override
+    public String errorCode() {
+        return "content_not_found";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "contentId", contentId != null ? String.valueOf(contentId) : null,
+                "contentHash", contentHash
+        );
     }
 }

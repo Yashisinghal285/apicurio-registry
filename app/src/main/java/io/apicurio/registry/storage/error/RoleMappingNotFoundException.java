@@ -1,6 +1,9 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
 import lombok.Getter;
+
+import java.util.Map;
 
 public class RoleMappingNotFoundException extends NotFoundException {
 
@@ -21,5 +24,18 @@ public class RoleMappingNotFoundException extends NotFoundException {
         super("No mapping for principal '" + principalId + "' and role '" + role + "' was found.");
         this.principalId = principalId;
         this.role = role;
+    }
+
+    @Override
+    public String errorCode() {
+        return "role_mapping_not_found";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "principalId", principalId,
+                "role", role
+        );
     }
 }

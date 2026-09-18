@@ -1,7 +1,10 @@
 package io.apicurio.registry.storage.error;
 
 import io.apicurio.registry.model.GAV;
+import io.apicurio.registry.types.RegistryErrorDetails;
 import lombok.Getter;
+
+import java.util.Map;
 
 public class VersionNotFoundException extends NotFoundException {
 
@@ -53,5 +56,20 @@ public class VersionNotFoundException extends NotFoundException {
             return "No version '" + version + "' found for artifact with ID '" + artifactId + "' "
                     + "in group '" + groupId + "'.";
         }
+    }
+
+    @Override
+    public String errorCode() {
+        return "version_not_found";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "groupId", groupId,
+                "artifactId", artifactId,
+                "version", version,
+                "globalId", globalId != null ? String.valueOf(globalId) : null
+        );
     }
 }

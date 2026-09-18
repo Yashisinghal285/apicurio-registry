@@ -1,6 +1,9 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
 import lombok.Getter;
+
+import java.util.Map;
 
 public class GroupNotFoundException extends NotFoundException {
 
@@ -21,5 +24,17 @@ public class GroupNotFoundException extends NotFoundException {
 
     private static String message(String groupId) {
         return "No group '" + groupId + "' was found.";
+    }
+
+    @Override
+    public String errorCode() {
+        return "group_not_found";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "groupId", groupId
+        );
     }
 }

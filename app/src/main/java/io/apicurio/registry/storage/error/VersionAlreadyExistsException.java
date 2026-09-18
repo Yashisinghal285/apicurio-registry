@@ -1,6 +1,9 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
 import lombok.Getter;
+
+import java.util.Map;
 
 public class VersionAlreadyExistsException extends AlreadyExistsException {
 
@@ -37,5 +40,20 @@ public class VersionAlreadyExistsException extends AlreadyExistsException {
             return "An artifact version '" + version + "' for artifact ID '" + artifactId + "' "
                     + "in group '" + groupId + "' already exists.";
         }
+    }
+
+    @Override
+    public String errorCode() {
+        return "version_already_exists";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "groupId", groupId,
+                "artifactId", artifactId,
+                "version", version,
+                "globalId", globalId != null ? String.valueOf(globalId) : null
+        );
     }
 }

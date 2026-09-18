@@ -1,5 +1,9 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
+
+import java.util.Map;
+
 /**
  * Exception thrown when a table commit fails due to a conflict (e.g., concurrent modification or unmet
  * requirements).
@@ -29,5 +33,19 @@ public class CommitFailedException extends RegistryStorageException {
 
     public String getReason() {
         return reason;
+    }
+
+    @Override
+    public String errorCode() {
+        return "commit_failed";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "groupId", groupId,
+                "artifactId", artifactId,
+                "reason", reason
+        );
     }
 }

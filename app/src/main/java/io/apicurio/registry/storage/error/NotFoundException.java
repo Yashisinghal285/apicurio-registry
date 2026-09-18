@@ -15,4 +15,9 @@ public abstract class NotFoundException extends RegistryStorageException {
     protected NotFoundException(String reason) {
         super(reason);
     }
+
+    @Override
+    public String errorCode() {
+        return "not_found";
+    }
 }

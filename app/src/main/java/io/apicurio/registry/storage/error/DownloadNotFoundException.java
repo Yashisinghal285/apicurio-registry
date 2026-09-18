@@ -7,4 +7,9 @@ public class DownloadNotFoundException extends NotFoundException {
     public DownloadNotFoundException() {
         super("Download not found.");
     }
+
+    @Override
+    public String errorCode() {
+        return "download_not_found";
+    }
 }

@@ -18,4 +18,9 @@ public class NotAllowedException extends RegistryStorageException {
     public NotAllowedException(String reason, Throwable cause) {
         super(reason, cause);
     }
+
+    @Override
+    public String errorCode() {
+        return "not_allowed";
+    }
 }

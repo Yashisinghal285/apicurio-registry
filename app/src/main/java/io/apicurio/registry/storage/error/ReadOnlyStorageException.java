@@ -15,4 +15,9 @@ public class ReadOnlyStorageException extends NotAllowedException {
     public ReadOnlyStorageException(String reason, Throwable cause) {
         super(reason, cause);
     }
+
+    @Override
+    public String errorCode() {
+        return "read_only_storage";
+    }
 }

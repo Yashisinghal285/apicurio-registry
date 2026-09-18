@@ -1,6 +1,9 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
 import lombok.Getter;
+
+import java.util.Map;
 
 public class ConfigPropertyNotFoundException extends NotFoundException {
 
@@ -12,5 +15,17 @@ public class ConfigPropertyNotFoundException extends NotFoundException {
     public ConfigPropertyNotFoundException(String propertyName) {
         super("No configuration property named '" + propertyName + "' was found.");
         this.propertyName = propertyName;
+    }
+
+    @Override
+    public String errorCode() {
+        return "config_property_not_found";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "propertyName", propertyName
+        );
     }
 }

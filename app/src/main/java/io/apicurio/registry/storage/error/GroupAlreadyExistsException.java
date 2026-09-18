@@ -1,6 +1,9 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
 import lombok.Getter;
+
+import java.util.Map;
 
 public class GroupAlreadyExistsException extends AlreadyExistsException {
 
@@ -12,5 +15,17 @@ public class GroupAlreadyExistsException extends AlreadyExistsException {
     public GroupAlreadyExistsException(String groupId) {
         super("Group '" + groupId + "' already exists.");
         this.groupId = groupId;
+    }
+
+    @Override
+    public String errorCode() {
+        return "group_already_exists";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "groupId", groupId
+        );
     }
 }

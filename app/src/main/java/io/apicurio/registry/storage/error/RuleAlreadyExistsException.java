@@ -1,7 +1,10 @@
 package io.apicurio.registry.storage.error;
 
+import io.apicurio.registry.types.RegistryErrorDetails;
 import io.apicurio.registry.types.RuleType;
 import lombok.Getter;
+
+import java.util.Map;
 
 public class RuleAlreadyExistsException extends AlreadyExistsException {
 
@@ -13,5 +16,17 @@ public class RuleAlreadyExistsException extends AlreadyExistsException {
     public RuleAlreadyExistsException(RuleType rule) {
         super("A rule named '" + rule.name() + "' already exists.");
         this.rule = rule;
+    }
+
+    @Override
+    public String errorCode() {
+        return "rule_already_exists";
+    }
+
+    @Override
+    public Map<String, String> context() {
+        return RegistryErrorDetails.buildContext(
+                "rule", rule != null ? rule.name() : null
+        );
     }
 }
