@@ -99,6 +99,30 @@ public class RegistryStorageConfigCacheTest {
     }
 
     @Test
+    void deleteConfigPropertyInvalidatesTheWholeCache() {
+        DynamicConfigPropertyDto propertyA = new DynamicConfigPropertyDto("apicurio.a", "1");
+        DynamicConfigPropertyDto propertyB = new DynamicConfigPropertyDto("apicurio.b", "1");
+        when(delegate.getConfigProperty("apicurio.a")).thenReturn(propertyA);
+        when(delegate.getConfigProperty("apicurio.b")).thenReturn(propertyB);
+
+        // Warm the cache for both properties.
+        cache.getConfigProperty("apicurio.a");
+        cache.getConfigProperty("apicurio.b");
+        verify(delegate, times(1)).getConfigProperty("apicurio.a");
+        verify(delegate, times(1)).getConfigProperty("apicurio.b");
+
+        cache.deleteConfigProperty("apicurio.a");
+        verify(delegate).deleteConfigProperty("apicurio.a");
+
+        // Both entries must be invalidated, so subsequent reads query storage again.
+        when(delegate.getConfigProperty("apicurio.a")).thenReturn(null);
+        assertNull(cache.getConfigProperty("apicurio.a"));
+        cache.getConfigProperty("apicurio.b");
+        verify(delegate, times(2)).getConfigProperty("apicurio.a");
+        verify(delegate, times(2)).getConfigProperty("apicurio.b");
+    }
+
+    @Test
     void scheduledRefreshInvalidatesCacheWhenStalePropertiesAreDetected() {
         DynamicConfigPropertyDto property = new DynamicConfigPropertyDto("apicurio.a", "1");
         when(delegate.getConfigProperty("apicurio.a")).thenReturn(property);
